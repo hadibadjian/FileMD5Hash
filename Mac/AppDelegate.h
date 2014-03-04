@@ -18,13 +18,23 @@
  *
  */
 
+//---------------------------------------------------------
+// Imports
+//---------------------------------------------------------
+
+// Cocoa
 #import <Cocoa/Cocoa.h>
 
+
+//---------------------------------------------------------
+// Interface declaration
+//---------------------------------------------------------
 
 @interface AppDelegate : NSObject <NSApplicationDelegate> {
     NSWindow *window;
     NSTextField *label;
 }
+
 
 #pragma mark -
 #pragma mark Properties
@@ -37,5 +47,6 @@
 #pragma mark Actions
 
 - (IBAction)computeMD5HashOfBinary:(id)sender;
+
 
 @end

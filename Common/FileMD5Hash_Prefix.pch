@@ -1,5 +1,5 @@
 /*
- *  main.m
+ *  FileMD5Hash_Prefix.pch
  *  FileMD5Hash
  * 
  *  Copyright © 2010 Joel Lopes Da Silva. All rights reserved.
@@ -19,17 +19,30 @@
  */
 
 //---------------------------------------------------------
-// Imports
+// Includes and imports
 //---------------------------------------------------------
 
-// Cocoa
-#import <Cocoa/Cocoa.h>
+// Target conditionals
+#include <TargetConditionals.h>
+
+// General imports for Objective-C
+#ifdef __OBJC__
+    #if TARGET_OS_IPHONE
+        #import <Foundation/Foundation.h>
+        #import <UIKit/UIKit.h>
+    #elif TARGET_OS_MAC
+        #import <Cocoa/Cocoa.h>
+    #endif
+#endif
 
 
 //---------------------------------------------------------
-// Main entry point
+// Macros
 //---------------------------------------------------------
 
-int main(int argc, const char *argv[]) {
-    return NSApplicationMain(argc, argv);
-}
+// Extern
+#if defined(__cplusplus)
+    #define FILEMD5HASH_EXTERN extern "C"
+#else
+    #define FILEMD5HASH_EXTERN extern
+#endif

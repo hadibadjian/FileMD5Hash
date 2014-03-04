@@ -1,5 +1,5 @@
 /*
- *  main.m
+ *  FileMD5Hash.h
  *  FileMD5Hash
  * 
  *  Copyright © 2010 Joel Lopes Da Silva. All rights reserved.
@@ -18,18 +18,42 @@
  *
  */
 
-//---------------------------------------------------------
-// Imports
-//---------------------------------------------------------
-
-// Cocoa
-#import <Cocoa/Cocoa.h>
-
+#ifndef FILEMD5HASH_H
+#define FILEMD5HASH_H
 
 //---------------------------------------------------------
-// Main entry point
+// Macros
 //---------------------------------------------------------
 
-int main(int argc, const char *argv[]) {
-    return NSApplicationMain(argc, argv);
-}
+// Extern
+#if defined(__cplusplus)
+    #define FILEMD5HASH_EXTERN extern "C"
+#else
+    #define FILEMD5HASH_EXTERN extern
+#endif
+
+//---------------------------------------------------------
+// Includes
+//---------------------------------------------------------
+
+// Core Foundation
+#include <CoreFoundation/CoreFoundation.h>
+
+
+//---------------------------------------------------------
+// Constant declaration
+//---------------------------------------------------------
+
+// In bytes
+#define FileHashDefaultChunkSizeForReadingData 4096
+
+
+//---------------------------------------------------------
+// Function declaration
+//---------------------------------------------------------
+
+FILEMD5HASH_EXTERN CFStringRef FileMD5HashCreateWithPath(CFStringRef filePath, 
+                                                         size_t chunkSizeForReadingData);
+
+
+#endif
