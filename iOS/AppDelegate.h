@@ -1,8 +1,8 @@
 /*
- *  FileMD5HashViewController.h
+ *  AppDelegate.h
  *  FileMD5Hash
  * 
- *  Copyright © 2010-2014 Joel Lopes Da Silva. All rights reserved.
+ *  Copyright © 2010 Joel Lopes Da Silva. All rights reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -18,8 +18,24 @@
  *
  */
 
-#import <Cocoa/Cocoa.h>
+#import <UIKit/UIKit.h>
 
-@interface FileMD5HashViewController : NSViewController
+
+@interface AppDelegate : NSObject <UIApplicationDelegate> {
+    UIWindow *window;
+    UILabel *label;
+}
+
+#pragma mark -
+#pragma mark Properties
+
+@property (nonatomic, retain) IBOutlet UIWindow *window;
+@property (nonatomic, retain) IBOutlet UILabel *label;
+
+
+#pragma mark -
+#pragma mark Actions
+
+- (IBAction)computeMD5HashOfBinary:(id)sender;
 
 @end

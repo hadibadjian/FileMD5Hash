@@ -1,8 +1,8 @@
 /*
- *  FileMD5HashViewController.h
+ *  main.m
  *  FileMD5Hash
  * 
- *  Copyright © 2010-2014 Joel Lopes Da Silva. All rights reserved.
+ *  Copyright © 2010 Joel Lopes Da Silva. All rights reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -18,8 +18,8 @@
  *
  */
 
-#import <UIKit/UIKit.h>
+#import <Cocoa/Cocoa.h>
 
-@interface FileMD5HashViewController : UIViewController
-
-@end
+int main(int argc, const char *argv[]) {
+    return NSApplicationMain(argc, argv);
+}

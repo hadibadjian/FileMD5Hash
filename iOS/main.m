@@ -1,8 +1,8 @@
 /*
- *  FileMD5HashApplicationDelegate.h
+ *  main.m
  *  FileMD5Hash
  * 
- *  Copyright © 2010-2014 Joel Lopes Da Silva. All rights reserved.
+ *  Copyright © 2010 Joel Lopes Da Silva. All rights reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -18,10 +18,11 @@
  *
  */
 
-#import <Cocoa/Cocoa.h>
+#import <UIKit/UIKit.h>
 
-@interface FileMD5HashApplicationDelegate : NSObject <NSApplicationDelegate>
-
-@property (nonatomic, strong) IBOutlet NSWindow *window;
-
-@end
+int main(int argc, char *argv[]) {
+    NSAutoreleasePool *pool = [NSAutoreleasePool new];
+    int result = UIApplicationMain(argc, argv, nil, nil);
+    [pool drain];
+    return result;
+}

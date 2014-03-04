@@ -1,8 +1,8 @@
 /*
- *  FileMD5Hash.m
+ *  AppDelegate.h
  *  FileMD5Hash
  * 
- *  Copyright © 2010-2014 Joel Lopes Da Silva. All rights reserved.
+ *  Copyright © 2010 Joel Lopes Da Silva. All rights reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -20,6 +20,22 @@
 
 #import <Cocoa/Cocoa.h>
 
-int main(int argc, const char *argv[]) {
-    return NSApplicationMain(argc, argv);
+
+@interface AppDelegate : NSObject <NSApplicationDelegate> {
+    NSWindow *window;
+    NSTextField *label;
 }
+
+#pragma mark -
+#pragma mark Properties
+
+@property (assign) IBOutlet NSWindow *window;
+@property (assign) IBOutlet NSTextField *label;
+
+
+#pragma mark -
+#pragma mark Actions
+
+- (IBAction)computeMD5HashOfBinary:(id)sender;
+
+@end
