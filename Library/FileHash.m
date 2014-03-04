@@ -30,33 +30,10 @@
 // Constants
 static const size_t FileHashDefaultChunkSizeForReadingData = 4096;
 
-// Function pointer types for functions used in the computation 
-// of a cryptographic hash.
-typedef int (*FileHashInitFunction)   (uint8_t *hashObjectPointer[]);
-typedef int (*FileHashUpdateFunction) (uint8_t *hashObjectPointer[], const void *data, CC_LONG len);
-typedef int (*FileHashFinalFunction)  (unsigned char *md, uint8_t *hashObjectPointer[]);
-
-// Structure used to describe a hash computation context.
-typedef struct _FileHashComputationContext {
-    FileHashInitFunction initFunction;
-    FileHashUpdateFunction updateFunction;
-    FileHashFinalFunction finalFunction;
-    size_t digestLength;
-    uint8_t **hashObjectPointer;
-} FileHashComputationContext;
-
-#define FileHashComputationContextInitialize(context, hashAlgorithmName)                    \
-    CC_##hashAlgorithmName##_CTX hashObjectFor##hashAlgorithmName;                          \
-    context.initFunction      = (FileHashInitFunction)&CC_##hashAlgorithmName##_Init;       \
-    context.updateFunction    = (FileHashUpdateFunction)&CC_##hashAlgorithmName##_Update;   \
-    context.finalFunction     = (FileHashFinalFunction)&CC_##hashAlgorithmName##_Final;     \
-    context.digestLength      = CC_##hashAlgorithmName##_DIGEST_LENGTH;                     \
-    context.hashObjectPointer = (uint8_t **)&hashObjectFor##hashAlgorithmName
-
 
 @implementation FileHash
 
-+ (NSString *)hashOfFileAtPath:(NSString *)filePath withComputationContext:(FileHashComputationContext *)context {
++ (NSString *)md5HashOfFileAtPath:(NSString *)filePath {
     NSString *result = nil;
     CFURLRef fileURL = CFURLCreateWithFileSystemPath(kCFAllocatorDefault, (CFStringRef)filePath, kCFURLPOSIXPathStyle, (Boolean)false);
     CFReadStreamRef readStream = fileURL ? CFReadStreamCreateWithFile(kCFAllocatorDefault, fileURL) : NULL;
@@ -67,7 +44,8 @@ typedef struct _FileHashComputationContext {
         const size_t chunkSizeForReadingData = FileHashDefaultChunkSizeForReadingData;
         
         // Initialize the hash object
-        (*context->initFunction)(context->hashObjectPointer);
+        CC_MD5_CTX hashObject;
+        CC_MD5_Init(&hashObject);
         
         // Feed the data to the hash object.
         BOOL hasMoreData = YES;
@@ -79,13 +57,13 @@ typedef struct _FileHashComputationContext {
             } else if (readBytesCount == 0) {
                 hasMoreData = NO;
             } else {
-                (*context->updateFunction)(context->hashObjectPointer, (const void *)buffer, (CC_LONG)readBytesCount);
+                CC_MD5_Update(&hashObject, (const void *)buffer, (CC_LONG)readBytesCount);
             }
         }
         
         // Compute the hash digest
-        unsigned char digest[context->digestLength];
-        (*context->finalFunction)(digest, context->hashObjectPointer);
+        unsigned char digest[CC_MD5_DIGEST_LENGTH];
+        CC_MD5_Final(digest, &hashObject);
         
         // Close the read stream.
         CFReadStreamClose(readStream);
@@ -104,24 +82,6 @@ typedef struct _FileHashComputationContext {
     if (readStream) CFRelease(readStream);
     if (fileURL)    CFRelease(fileURL);
     return result;
-}
-
-+ (NSString *)md5HashOfFileAtPath:(NSString *)filePath {
-    FileHashComputationContext context;
-    FileHashComputationContextInitialize(context, MD5);
-    return [self hashOfFileAtPath:filePath withComputationContext:&context];
-}
-
-+ (NSString *)sha1HashOfFileAtPath:(NSString *)filePath {
-    FileHashComputationContext context;
-    FileHashComputationContextInitialize(context, SHA1);
-    return [self hashOfFileAtPath:filePath withComputationContext:&context];
-}
-
-+ (NSString *)sha512HashOfFileAtPath:(NSString *)filePath {
-    FileHashComputationContext context;
-    FileHashComputationContextInitialize(context, SHA512);
-    return [self hashOfFileAtPath:filePath withComputationContext:&context];
 }
 
 @end
